@@ -30,7 +30,6 @@ def main():
         sys.exit(2)
     else:
         model_path = args.model
-        print(model_path)
 
 
     if args.image is None:
@@ -38,7 +37,6 @@ def main():
         print("use the -h option to see usage information")
     else:
         image_path = args.image
-        print(image_path)
 
 
     import cv2
