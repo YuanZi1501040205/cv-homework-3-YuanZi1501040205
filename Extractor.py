@@ -1,6 +1,12 @@
+"""main.py: Preprocess code to prepare train and test datasets for training"""
 
-#Example Usage: ./Extractor -path_input '/project/kakadiaris/yz/dataset/' path_output '/project/kakadiaris/yz/dataset/images/' -dataset train -numPos 14000 -numNeg 10000
-#Example Usage: ./Extractor -path_input '/project/kakadiaris/yz/dataset/' path_output '/project/kakadiaris/yz/dataset/images/' -dataset test -numPos 3500 -numNeg 2500
+#Example Usage: python Extractor.py -path_input '/project/kakadiaris/yz/dataset/' -path_output '/project/kakadiaris/yz/dataset/images/' -dataset train -numPos 14000 -numNeg 10000
+#Example Usage: python Extractor.py -path_input '/project/kakadiaris/yz/dataset/' -path_output '/project/kakadiaris/yz/dataset/images/' -dataset test -numPos 3500 -numNeg 2500
+
+__author__ = "Yuan Zi"
+__email__ = "yzi2@central.uh.edu"
+__version__ = "1.0.0"
+
 # import necessary apis
 import cv2
 from Functions import extract_roi
@@ -16,13 +22,12 @@ def main():
 
     #Parse input arguments
     from argparse import ArgumentParser
+    from pathlib import Path
 
     parser = ArgumentParser()
 
-    parser.add_argument("-path_input", "--path_input", dest="path_input",
-                        help="specify the path of the input dataset", metavar="PATHINPUT")
-    parser.add_argument("-path_output", "--path_output", dest="path_output",
-                        help="Specify the the path of the output files and images", metavar="PATHOUTPUT")
+    parser.add_argument("-path_input", type=Path, help="specify the path of the input dataset")
+    parser.add_argument("-path_output", type=Path, help="Specify the the path of the output files and images")
     parser.add_argument("-dataset", "--dataset", dest="dataset",
                         help="Specify which dataset you want to generate(train or test)", metavar="DATASET")
     parser.add_argument("-numPos", "--numPos", dest="numPos",
@@ -48,10 +53,9 @@ def main():
         path_output = args.path_output
 
     # Check resize scale parametes
-    if args.model is None:
-        print("Model not specified using default (grey)")
+    if args.dataset is None:
+        print("please specify train or test)")
         print("use the -h option to see usage information")
-        model = 'grey'
     elif args.dataset not in ['train', 'test']:
         print("Unknown dataset, please specify (train or test)")
         print("use the -h option to see usage information")
@@ -73,11 +77,11 @@ def main():
         numNeg = args.numNeg
 
     # configure input and output path
-    path_output_train = path_output + 'train/'
-    path_output_test = path_output + 'test/'
-    path_data1 = path_input + 'parking1a/'
-    path_data2 = path_input + 'parking1b/'
-    path_data3 = path_input + 'parking2/'
+    path_output_train = str(path_output) + '/train/'
+    path_output_test = str(path_output) + '/test/'
+    path_data1 = str(path_input) + '/parking1a/'
+    path_data2 = str(path_input) + '/parking1b/'
+    path_data3 = str(path_input) + '/parking2/'
     path_data = []
     path_data.append(path_data1)
     path_data.append(path_data2)
@@ -113,7 +117,7 @@ def main():
                             pass
                         else:
                             occupied = space.attrib['occupied']
-                        if count_neg < numNeg and occupied == '0':
+                        if count_neg < int(numNeg) and occupied == '0':
                             center = tuple(
                                 [int(rotatedRect.getchildren()[0].attrib['x']),
                                  int(rotatedRect.getchildren()[0].attrib['y'])])
@@ -147,7 +151,7 @@ def main():
                                 print('number of negatives: ', count_neg)
                             else:
                                 pass
-                        elif count_pos < numPos and occupied == '1':
+                        elif count_pos < int(numPos) and occupied == '1':
                             rotatedRect = space.find('rotatedRect')
                             id = space.attrib['id']
                             if len(space.attrib) == 1:
@@ -232,7 +236,7 @@ def main():
                             pass
                         else:
                             occupied = space.attrib['occupied']
-                        if count_neg < numNeg and occupied == '0':
+                        if count_neg < int(numNeg) and occupied == '0':
                             center = tuple(
                                 [int(rotatedRect.getchildren()[0].attrib['x']),
                                  int(rotatedRect.getchildren()[0].attrib['y'])])
@@ -266,7 +270,7 @@ def main():
                                 print('number of negatives: ', count_neg)
                             else:
                                 pass
-                        elif count_pos < numPos and occupied == '1':
+                        elif count_pos < int(numPos) and occupied == '1':
                             rotatedRect = space.find('rotatedRect')
                             id = space.attrib['id']
                             if len(space.attrib) == 1:
