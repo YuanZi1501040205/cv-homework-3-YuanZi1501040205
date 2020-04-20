@@ -1,4 +1,4 @@
-"""main.py: Preprocess code to prepare train and test datasets for training"""
+"""Extractor.py: Preprocess code to prepare train and test datasets for training"""
 
 #Example Usage: python Extractor.py -path_input '/project/kakadiaris/yz/dataset/' -path_output '/project/kakadiaris/yz/dataset/images/' -dataset train -numPos 14000 -numNeg 10000
 #Example Usage: python Extractor.py -path_input '/project/kakadiaris/yz/dataset/' -path_output '/project/kakadiaris/yz/dataset/images/' -dataset test -numPos 3500 -numNeg 2500
