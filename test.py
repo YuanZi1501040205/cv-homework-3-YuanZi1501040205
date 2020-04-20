@@ -24,19 +24,21 @@ def main():
     args = parser.parse_args()
 
     #Load image
-    if args.path_input is None:
+    if args.model is None:
         print("Please specify the path of the input dataset")
         print("use the -h option to see usage information")
         sys.exit(2)
     else:
         model_path = args.model
+        print(model_path)
 
 
-    if args.path_output is None:
+    if args.image is None:
         print("Please specify the path of the output dataset")
         print("use the -h option to see usage information")
     else:
         image_path = args.image
+        print(image_path)
 
 
     import cv2
@@ -57,3 +59,6 @@ def main():
         i = i + 1
     cv2.imwrite('test.jpg', img)
 
+
+if __name__ == "__main__":
+    main()
